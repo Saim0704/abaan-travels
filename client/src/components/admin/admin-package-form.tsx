@@ -262,7 +262,7 @@ export default function AdminPackageForm({ editingPackage, onCancel }: AdminPack
                   </div>
                   <FormControl>
                     <Switch
-                      checked={field.value}
+                      checked={field.value || false}
                       onCheckedChange={field.onChange}
                       data-testid="switch-admin-package-featured"
                     />

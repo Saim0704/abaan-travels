@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function PackageSection() {
   const [activeType, setActiveType] = useState<"umrah" | "hajj">("umrah");
 
-  const { data: packages = [], isLoading } = useQuery({
+  const { data: packages = [], isLoading } = useQuery<Package[]>({
     queryKey: ["/api/packages/type", activeType],
   });
 
@@ -90,7 +90,7 @@ export default function PackageSection() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packages.map((pkg: Package) => (
+            {packages.map((pkg) => (
               <PackageCard key={pkg.id} package={pkg} />
             ))}
           </div>

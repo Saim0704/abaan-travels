@@ -2,17 +2,18 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Package, SliderImage } from "@shared/schema";
 import PackageForm from "@/components/admin/package-form";
 import PackageList from "@/components/admin/package-list";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("packages");
 
-  const { data: packages = [], isLoading: packagesLoading } = useQuery({
+  const { data: packages = [], isLoading: packagesLoading } = useQuery<Package[]>({
     queryKey: ["/api/packages"],
   });
 
-  const { data: sliderImages = [], isLoading: sliderLoading } = useQuery({
+  const { data: sliderImages = [], isLoading: sliderLoading } = useQuery<SliderImage[]>({
     queryKey: ["/api/slider-images"],
   });
 
@@ -85,7 +86,7 @@ export default function Admin() {
                       </p>
                     ) : (
                       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {sliderImages.map((image: any) => (
+                        {sliderImages.map((image) => (
                           <div key={image.id} className="border border-border rounded-lg p-4">
                             <img
                               src={image.imageUrl}
@@ -131,7 +132,7 @@ export default function Admin() {
                   <div className="text-center">
                     <i className="fas fa-mosque text-3xl text-secondary mb-3"></i>
                     <h3 className="text-2xl font-bold text-foreground" data-testid="text-umrah-packages">
-                      {packages.filter((pkg: any) => pkg.type === 'umrah').length}
+                      {packages.filter((pkg) => pkg.type === 'umrah').length}
                     </h3>
                     <p className="text-muted-foreground">Umrah Packages</p>
                   </div>
@@ -143,7 +144,7 @@ export default function Admin() {
                   <div className="text-center">
                     <i className="fas fa-kaaba text-3xl text-accent mb-3"></i>
                     <h3 className="text-2xl font-bold text-foreground" data-testid="text-hajj-packages">
-                      {packages.filter((pkg: any) => pkg.type === 'hajj').length}
+                      {packages.filter((pkg) => pkg.type === 'hajj').length}
                     </h3>
                     <p className="text-muted-foreground">Hajj Packages</p>
                   </div>
@@ -172,14 +173,14 @@ export default function Admin() {
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Featured Packages:</span>
                     <span className="font-semibold" data-testid="text-featured-packages">
-                      {packages.filter((pkg: any) => pkg.featured).length}
+                      {packages.filter((pkg) => pkg.featured).length}
                     </span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground">Average Package Price:</span>
                     <span className="font-semibold" data-testid="text-average-price">
                       ${packages.length > 0 
-                        ? Math.round(packages.reduce((sum: number, pkg: any) => sum + pkg.price, 0) / packages.length).toLocaleString()
+                        ? Math.round(packages.reduce((sum, pkg) => sum + pkg.price, 0) / packages.length).toLocaleString()
                         : 0}
                     </span>
                   </div>

@@ -188,7 +188,7 @@ export class MemStorage implements IStorage {
 
   async createPackage(packageData: InsertPackage): Promise<Package> {
     const id = randomUUID();
-    const pkg: Package = { ...packageData, id };
+    const pkg: Package = { ...packageData, id, featured: packageData.featured ?? false };
     this.packages.set(id, pkg);
     return pkg;
   }
@@ -213,7 +213,7 @@ export class MemStorage implements IStorage {
 
   async createSliderImage(sliderData: InsertSliderImage): Promise<SliderImage> {
     const id = randomUUID();
-    const slider: SliderImage = { ...sliderData, id };
+    const slider: SliderImage = { ...sliderData, id, order: sliderData.order ?? 0 };
     this.sliderImages.set(id, slider);
     return slider;
   }

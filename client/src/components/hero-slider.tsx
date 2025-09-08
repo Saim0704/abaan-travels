@@ -6,7 +6,7 @@ import { SliderImage } from "@shared/schema";
 export default function HeroSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  const { data: sliderImages = [], isLoading } = useQuery({
+  const { data: sliderImages = [], isLoading } = useQuery<SliderImage[]>({
     queryKey: ["/api/slider-images"],
   });
 
@@ -49,7 +49,7 @@ export default function HeroSlider() {
 
   return (
     <section className="hero-slider">
-      {sliderImages.map((slide: SliderImage, index: number) => (
+      {sliderImages.map((slide, index) => (
         <div
           key={slide.id}
           className={`slider-item ${index === currentSlide ? "active" : ""}`}
@@ -82,7 +82,7 @@ export default function HeroSlider() {
 
       {/* Slider Controls */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {sliderImages.map((_, index) => (
+        {sliderImages.map((_, index: number) => (
           <button
             key={index}
             className={`w-3 h-3 rounded-full transition-colors ${

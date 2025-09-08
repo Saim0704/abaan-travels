@@ -213,7 +213,7 @@ export default function PackageForm() {
               </div>
               <FormControl>
                 <Switch
-                  checked={field.value}
+                  checked={field.value || false}
                   onCheckedChange={field.onChange}
                   data-testid="switch-package-featured"
                 />
