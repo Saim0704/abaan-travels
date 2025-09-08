@@ -5,9 +5,20 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, SliderImage } from "@shared/schema";
 import PackageForm from "@/components/admin/package-form";
 import PackageList from "@/components/admin/package-list";
+import SliderForm from "@/components/admin/slider-form";
+import SliderList from "@/components/admin/slider-list";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("packages");
+  const [editingSlider, setEditingSlider] = useState<SliderImage | undefined>(undefined);
+
+  const handleEditSlider = (slider: SliderImage) => {
+    setEditingSlider(slider);
+  };
+
+  const handleCancelSliderEdit = () => {
+    setEditingSlider(undefined);
+  };
 
   const { data: packages = [], isLoading: packagesLoading } = useQuery<Package[]>({
     queryKey: ["/api/packages"],
@@ -69,48 +80,26 @@ export default function Admin() {
           </TabsContent>
 
           <TabsContent value="slider" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle data-testid="text-slider-management-title">Slider Image Management</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {sliderLoading ? (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground">Loading slider images...</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    {sliderImages.length === 0 ? (
-                      <p className="text-muted-foreground text-center py-8" data-testid="text-no-slider-images">
-                        No slider images available.
-                      </p>
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {sliderImages.map((image) => (
-                          <div key={image.id} className="border border-border rounded-lg p-4">
-                            <img
-                              src={image.imageUrl}
-                              alt={image.title}
-                              className="w-full h-32 object-cover rounded mb-3"
-                              data-testid={`slider-image-${image.id}`}
-                            />
-                            <h3 className="font-semibold text-foreground mb-1" data-testid={`slider-title-${image.id}`}>
-                              {image.title}
-                            </h3>
-                            <p className="text-sm text-muted-foreground mb-2" data-testid={`slider-subtitle-${image.id}`}>
-                              {image.subtitle}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              Order: {image.order}
-                            </p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-1">
+                <SliderForm editingSlider={editingSlider} onCancel={handleCancelSliderEdit} />
+              </div>
+              
+              <div className="lg:col-span-2">
+                <Card>
+                  <CardHeader>
+                    <CardTitle data-testid="text-existing-sliders-title">Existing Slider Images</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <SliderList 
+                      sliderImages={sliderImages} 
+                      isLoading={sliderLoading} 
+                      onEdit={handleEditSlider}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
           </TabsContent>
 
           <TabsContent value="stats" className="space-y-6">
