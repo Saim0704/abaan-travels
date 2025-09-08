@@ -33,13 +33,8 @@ export default function Footer() {
             <h4 className="font-semibold mb-4">Our Services</h4>
             <ul className="space-y-2">
               <li>
-                <Link href="/umrah-packages" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors" data-testid="link-footer-umrah">
-                  Umrah Packages
-                </Link>
-              </li>
-              <li>
-                <Link href="/hajj-packages" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors" data-testid="link-footer-hajj">
-                  Hajj Packages
+                <Link href="/packages" className="text-primary-foreground/80 hover:text-primary-foreground transition-colors" data-testid="link-footer-packages">
+                  All Packages
                 </Link>
               </li>
               <li>

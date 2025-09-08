@@ -11,8 +11,7 @@ export default function Navigation() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/umrah-packages", label: "Umrah Packages" },
-    { href: "/hajj-packages", label: "Hajj Packages" },
+    { href: "/packages", label: "Packages" },
     { href: "/contact", label: "Contact Us" },
   ];
 

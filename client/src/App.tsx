@@ -8,8 +8,7 @@ import Footer from "@/components/footer";
 import Home from "@/pages/home";
 import About from "@/pages/about";
 import Contact from "@/pages/contact";
-import UmrahPackages from "@/pages/umrah-packages";
-import HajjPackages from "@/pages/hajj-packages";
+import Packages from "@/pages/packages";
 import Admin from "@/pages/admin";
 import NotFound from "@/pages/not-found";
 
@@ -19,8 +18,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/contact" component={Contact} />
-      <Route path="/umrah-packages" component={UmrahPackages} />
-      <Route path="/hajj-packages" component={HajjPackages} />
+      <Route path="/packages" component={Packages} />
       <Route path="/admin" component={Admin} />
       <Route component={NotFound} />
     </Switch>
