@@ -1,53 +1,28 @@
-import { Moon, Sun, Monitor } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "@/components/theme-provider";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark";
+
+  const toggleTheme = () => {
+    setTheme(isDark ? "light" : "dark");
+  };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          className="h-9 w-9 glass-pill"
-          data-testid="button-theme-toggle"
-        >
-          <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-          <span className="sr-only">Toggle theme</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="glass-card">
-        <DropdownMenuItem 
-          onClick={() => setTheme("light")}
-          data-testid="theme-light"
-        >
-          <Sun className="mr-2 h-4 w-4" />
-          <span>Light</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={() => setTheme("dark")}
-          data-testid="theme-dark"
-        >
-          <Moon className="mr-2 h-4 w-4" />
-          <span>Dark</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={() => setTheme("system")}
-          data-testid="theme-system"
-        >
-          <Monitor className="mr-2 h-4 w-4" />
-          <span>System</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <button
+      onClick={toggleTheme}
+      className="relative inline-flex h-6 w-11 items-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:bg-gray-800/20 dark:border-gray-600/30"
+      data-testid="button-theme-toggle"
+      aria-label="Toggle theme"
+    >
+      <span
+        className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+          isDark ? "translate-x-6" : "translate-x-1"
+        } shadow-lg`}
+      />
+      <Sun className={`absolute left-1 h-3 w-3 text-yellow-500 transition-opacity ${isDark ? 'opacity-0' : 'opacity-100'}`} />
+      <Moon className={`absolute right-1 h-3 w-3 text-blue-400 transition-opacity ${isDark ? 'opacity-100' : 'opacity-0'}`} />
+    </button>
   );
 }

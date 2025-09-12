@@ -12,7 +12,7 @@
   --popover-foreground: hsl(210 40% 22%);
   --primary: hsl(158 64% 20%);
   --primary-foreground: hsl(0 0% 98%);
-  --secondary: hsl(25 95% 44%);
+  --secondary: hsl(158 64% 30%);
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(210 40% 96%);
   --muted-foreground: hsl(215 16% 47%);
@@ -52,8 +52,8 @@
   --spacing: 0.25rem;
   
   /* Glass morphism variables */
-  --glass-bg: hsl(0 0% 100% / 0.55);
-  --glass-border: hsl(0 0% 100% / 0.35);
+  --glass-bg: hsl(0 0% 100% / 0.75);
+  --glass-border: hsl(0 0% 100% / 0.50);
   --glass-shadow: 0 10px 30px hsl(0 0% 0% / 0.06);
 }
 
@@ -66,7 +66,7 @@
   --popover-foreground: hsl(200 6.6667% 91.1765%);
   --primary: hsl(158 64% 25%);
   --primary-foreground: hsl(0 0% 100%);
-  --secondary: hsl(25 95% 50%);
+  --secondary: hsl(158 64% 35%);
   --secondary-foreground: hsl(0 0% 98%);
   --muted: hsl(0 0% 9.4118%);
   --muted-foreground: hsl(210 3.3898% 46.2745%);
@@ -104,8 +104,8 @@
   --shadow-2xl: 0px 2px 0px 0px hsl(158 64% 25% / 0.00);
   
   /* Glass morphism variables for dark mode */
-  --glass-bg: hsl(0 0% 5% / 0.45);
-  --glass-border: hsl(0 0% 100% / 0.10);
+  --glass-bg: hsl(0 0% 100% / 0.10);
+  --glass-border: hsl(0 0% 100% / 0.15);
   --glass-shadow: 0 10px 30px hsl(0 0% 0% / 0.40);
 }
 
