@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertPackageSchema, type InsertPackage } from "@shared/schema";
+import { insertPackageSchema, type InsertPackage, PREDEFINED_AMENITIES } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 
@@ -23,10 +24,16 @@ export default function PackageForm() {
       description: "",
       price: 0,
       duration: "",
+      days: 7,
+      fromDate: "",
+      toDate: "",
       type: "umrah",
       accommodation: "",
       transport: "",
       meals: "",
+      hotelDistanceMakkah: "",
+      hotelDistanceMadinah: "",
+      amenities: [],
       image: "",
       featured: false,
     },
@@ -87,7 +94,7 @@ export default function PackageForm() {
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <FormField
             control={form.control}
             name="price"
@@ -115,6 +122,64 @@ export default function PackageForm() {
                 <FormLabel>Duration</FormLabel>
                 <FormControl>
                   <Input {...field} placeholder="e.g., 14 Days" data-testid="input-package-duration" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="days"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Days</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    {...field}
+                    onChange={(e) => field.onChange(parseInt(e.target.value))}
+                    data-testid="input-package-days"
+                    min="1"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="fromDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>From Date</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="date"
+                    data-testid="input-package-from-date"
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="toDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>To Date</FormLabel>
+                <FormControl>
+                  <Input
+                    {...field}
+                    type="date"
+                    data-testid="input-package-to-date"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -181,6 +246,85 @@ export default function PackageForm() {
               <FormControl>
                 <Input {...field} placeholder="e.g., All meals included" data-testid="input-package-meals" />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="hotelDistanceMakkah"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Hotel Distance from Haram (Makkah)</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g., 200m from Haram" data-testid="input-hotel-distance-makkah" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="hotelDistanceMadinah"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Hotel Distance from Masjid Nabawi (Madinah)</FormLabel>
+                <FormControl>
+                  <Input {...field} placeholder="e.g., 150m from Masjid Nabawi" data-testid="input-hotel-distance-madinah" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+
+        <FormField
+          control={form.control}
+          name="amenities"
+          render={() => (
+            <FormItem>
+              <div className="mb-4">
+                <FormLabel className="text-base">Amenities</FormLabel>
+                <p className="text-sm text-muted-foreground">Select amenities included in this package</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                {PREDEFINED_AMENITIES.map((amenity) => (
+                  <FormField
+                    key={amenity}
+                    control={form.control}
+                    name="amenities"
+                    render={({ field }) => {
+                      return (
+                        <FormItem
+                          key={amenity}
+                          className="flex flex-row items-start space-x-3 space-y-0"
+                        >
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(amenity)}
+                              onCheckedChange={(checked) => {
+                                const currentValue = field.value || [];
+                                return checked
+                                  ? field.onChange([...currentValue, amenity])
+                                  : field.onChange(
+                                      currentValue.filter((value) => value !== amenity)
+                                    );
+                              }}
+                              data-testid={`checkbox-amenity-${amenity.toLowerCase().replace(/ /g, '-')}`}
+                            />
+                          </FormControl>
+                          <FormLabel className="text-sm font-normal">
+                            {amenity}
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    }}
+                  />
+                ))}
+              </div>
               <FormMessage />
             </FormItem>
           )}

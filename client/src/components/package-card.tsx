@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Package } from "@shared/schema";
-import { Bed, Plane, Utensils } from "lucide-react";
+import { Bed, Plane, Utensils, Calendar, MapPin, Star } from "lucide-react";
 
 interface PackageCardProps {
   package: Package;
@@ -24,17 +24,43 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
           <h3 className="text-xl font-semibold text-foreground" data-testid={`package-title-${pkg.id}`}>
             {pkg.title}
           </h3>
-          <Badge
-            variant="secondary"
-            className="glass-pill bg-secondary/20 text-secondary border-secondary/30"
-            data-testid={`package-duration-${pkg.id}`}
-          >
-            {pkg.duration}
-          </Badge>
+          <div className="flex gap-2">
+            <Badge
+              variant="secondary"
+              className="glass-pill bg-secondary/20 text-secondary border-secondary/30"
+              data-testid={`package-duration-${pkg.id}`}
+            >
+              {pkg.duration}
+            </Badge>
+            {pkg.days && (
+              <Badge
+                variant="outline"
+                className="glass-pill bg-primary/10 text-primary border-primary/30"
+                data-testid={`package-days-${pkg.id}`}
+              >
+                {pkg.days} days
+              </Badge>
+            )}
+          </div>
         </div>
         <p className="text-muted-foreground mb-4 text-sm" data-testid={`package-description-${pkg.id}`}>
           {pkg.description}
         </p>
+        
+        {/* Tour Dates */}
+        {(pkg.fromDate || pkg.toDate) && (
+          <div className="flex items-center text-sm text-muted-foreground mb-3">
+            <Calendar className="h-4 w-4 mr-2 text-primary" />
+            <span data-testid={`package-dates-${pkg.id}`}>
+              {pkg.fromDate && pkg.toDate 
+                ? `${new Date(pkg.fromDate).toLocaleDateString()} - ${new Date(pkg.toDate).toLocaleDateString()}`
+                : pkg.fromDate 
+                ? `From ${new Date(pkg.fromDate).toLocaleDateString()}`
+                : `Until ${new Date(pkg.toDate).toLocaleDateString()}`}
+            </span>
+          </div>
+        )}
+        
         <div className="space-y-2 mb-4">
           <div className="flex items-center text-sm text-muted-foreground">
             <Bed className="h-4 w-4 mr-2 text-primary" />
@@ -48,7 +74,47 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
             <Utensils className="h-4 w-4 mr-2 text-primary" />
             <span data-testid={`package-meals-${pkg.id}`}>{pkg.meals}</span>
           </div>
+          
+          {/* Hotel Distances */}
+          {(pkg.hotelDistanceMakkah || pkg.hotelDistanceMadinah) && (
+            <div className="space-y-1">
+              {pkg.hotelDistanceMakkah && (
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4 mr-2 text-primary" />
+                  <span data-testid={`package-distance-makkah-${pkg.id}`}>Makkah: {pkg.hotelDistanceMakkah}</span>
+                </div>
+              )}
+              {pkg.hotelDistanceMadinah && (
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <MapPin className="h-4 w-4 mr-2 text-primary" />
+                  <span data-testid={`package-distance-madinah-${pkg.id}`}>Madinah: {pkg.hotelDistanceMadinah}</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
+        
+        {/* Amenities */}
+        {pkg.amenities && pkg.amenities.length > 0 && (
+          <div className="mb-4">
+            <div className="flex items-center mb-2">
+              <Star className="h-4 w-4 mr-2 text-primary" />
+              <span className="text-sm font-medium text-foreground">Included Amenities:</span>
+            </div>
+            <div className="flex flex-wrap gap-1" data-testid={`package-amenities-${pkg.id}`}>
+              {pkg.amenities.map((amenity, index) => (
+                <Badge
+                  key={`${amenity}-${index}`}
+                  variant="outline"
+                  className="glass-pill bg-green-50 dark:bg-green-950 text-green-700 dark:text-green-300 border-green-200 dark:border-green-800 text-xs"
+                  data-testid={`amenity-${amenity.toLowerCase().replace(/ /g, '-')}-${pkg.id}`}
+                >
+                  {amenity}
+                </Badge>
+              ))}
+            </div>
+          </div>
+        )}
         <div className="flex items-center justify-between">
           <div>
             <span className="text-2xl font-bold text-primary" data-testid={`package-price-${pkg.id}`}>

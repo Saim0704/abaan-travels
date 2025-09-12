@@ -88,10 +88,16 @@ export class MemStorage implements IStorage {
         description: "Experience luxury with 5-star hotels near Haram, premium transportation, and guided spiritual tours.",
         price: 2500,
         duration: "14 Days",
+        days: 14,
+        fromDate: "2024-12-01",
+        toDate: "2024-12-14",
         type: "umrah",
         accommodation: "5-star hotel near Haram",
         transport: "Direct flights included",
         meals: "All meals included",
+        hotelDistanceMakkah: "200m from Haram",
+        hotelDistanceMadinah: "150m from Masjid Nabawi",
+        amenities: ["Direct flight", "3 times buffet meals", "Transport", "Visa", "Ziyarat", "Umrah kit"],
         image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         featured: true
       },
@@ -101,10 +107,16 @@ export class MemStorage implements IStorage {
         description: "Comfortable accommodation with essential services, guided tours, and convenient transportation.",
         price: 1800,
         duration: "10 Days",
+        days: 10,
+        fromDate: "2024-11-15",
+        toDate: "2024-11-24",
         type: "umrah",
         accommodation: "4-star hotel accommodation",
         transport: "Group transportation",
         meals: "Breakfast & dinner included",
+        hotelDistanceMakkah: "500m from Haram",
+        hotelDistanceMadinah: "400m from Masjid Nabawi",
+        amenities: ["Direct flight", "Transport", "Visa", "Ziyarat"],
         image: "https://images.unsplash.com/photo-1549294413-26f195200c16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         featured: false
       },
@@ -114,10 +126,16 @@ export class MemStorage implements IStorage {
         description: "Affordable pilgrimage option with clean accommodation, basic meals, and essential services.",
         price: 1200,
         duration: "7 Days",
+        days: 7,
+        fromDate: "2024-10-20",
+        toDate: "2024-10-26",
         type: "umrah",
         accommodation: "3-star hotel accommodation",
         transport: "Shared transportation",
         meals: "Breakfast included",
+        hotelDistanceMakkah: "800m from Haram",
+        hotelDistanceMadinah: "600m from Masjid Nabawi",
+        amenities: ["Transport", "Visa"],
         image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         featured: false
       },
@@ -128,10 +146,16 @@ export class MemStorage implements IStorage {
         description: "Ultimate luxury Hajj experience with premium tents, private transportation, and personalized service.",
         price: 6500,
         duration: "21 Days",
+        days: 21,
+        fromDate: "2025-06-15",
+        toDate: "2025-07-05",
         type: "hajj",
         accommodation: "Premium tents in Mina & Arafat",
         transport: "Private AC transportation",
         meals: "Personal guide included",
+        hotelDistanceMakkah: "100m from Haram",
+        hotelDistanceMadinah: "100m from Masjid Nabawi",
+        amenities: ["Direct flight", "3 times buffet meals", "Transport", "Visa", "Ziyarat", "Umrah kit", "Zam Zam", "Laundry"],
         image: "https://pixabay.com/get/g81043d2b84a4f0158d9cae5a48c2007353d2a4e91c6324fb31f8f8021b7dd4dc15b417c93102df07a392427364c2f0cbe1cf95e9bbab0613dd509aafbeafdb6e_1280.jpg",
         featured: true
       },
@@ -141,10 +165,16 @@ export class MemStorage implements IStorage {
         description: "Complete Hajj package with comfortable accommodation, group services, and spiritual guidance.",
         price: 4200,
         duration: "18 Days",
+        days: 18,
+        fromDate: "2025-06-20",
+        toDate: "2025-07-07",
         type: "hajj",
         accommodation: "Standard tents & hotels",
         transport: "Group transportation",
         meals: "Group guide service",
+        hotelDistanceMakkah: "400m from Haram",
+        hotelDistanceMadinah: "300m from Masjid Nabawi",
+        amenities: ["Direct flight", "3 times buffet meals", "Transport", "Visa", "Ziyarat"],
         image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         featured: false
       },
@@ -154,10 +184,16 @@ export class MemStorage implements IStorage {
         description: "Affordable Hajj option with essential services and shared accommodation.",
         price: 3200,
         duration: "15 Days",
+        days: 15,
+        fromDate: "2025-06-25",
+        toDate: "2025-07-09",
         type: "hajj",
         accommodation: "Shared tents & basic hotels",
         transport: "Shared bus transport",
         meals: "Basic guidance provided",
+        hotelDistanceMakkah: "1km from Haram",
+        hotelDistanceMadinah: "800m from Masjid Nabawi",
+        amenities: ["Transport", "Visa"],
         image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
         featured: false
       }
@@ -199,7 +235,17 @@ export class MemStorage implements IStorage {
 
   async createPackage(packageData: InsertPackage): Promise<Package> {
     const id = randomUUID();
-    const pkg: Package = { ...packageData, id, featured: packageData.featured ?? false };
+    const pkg: Package = { 
+      ...packageData, 
+      id, 
+      featured: packageData.featured ?? false,
+      days: packageData.days ?? 7,
+      fromDate: packageData.fromDate ?? '',
+      toDate: packageData.toDate ?? '',
+      hotelDistanceMakkah: packageData.hotelDistanceMakkah ?? '',
+      hotelDistanceMadinah: packageData.hotelDistanceMadinah ?? '',
+      amenities: packageData.amenities ?? []
+    };
     this.packages.set(id, pkg);
     return pkg;
   }
@@ -289,10 +335,16 @@ export class MongoStorage implements IStorage {
             description: "Experience luxury with 5-star hotels near Haram, premium transportation, and guided spiritual tours.",
             price: 2500,
             duration: "14 Days",
+            days: 14,
+            fromDate: "2024-12-01",
+            toDate: "2024-12-14",
             type: "umrah",
             accommodation: "5-star hotel near Haram",
             transport: "Direct flights included",
             meals: "All meals included",
+            hotelDistanceMakkah: "200m from Haram",
+            hotelDistanceMadinah: "150m from Masjid Nabawi",
+            amenities: ["Direct flight", "3 times buffet meals", "Transport", "Visa", "Ziyarat", "Umrah kit"],
             image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
             featured: true
           },
@@ -301,10 +353,16 @@ export class MongoStorage implements IStorage {
             description: "Comfortable accommodation with essential services, guided tours, and convenient transportation.",
             price: 1800,
             duration: "10 Days",
+            days: 10,
+            fromDate: "2024-11-15",
+            toDate: "2024-11-24",
             type: "umrah",
             accommodation: "4-star hotel accommodation",
             transport: "Group transportation",
             meals: "Breakfast & dinner included",
+            hotelDistanceMakkah: "500m from Haram",
+            hotelDistanceMadinah: "400m from Masjid Nabawi",
+            amenities: ["Direct flight", "Transport", "Visa", "Ziyarat"],
             image: "https://images.unsplash.com/photo-1549294413-26f195200c16?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
             featured: false
           },
@@ -313,10 +371,16 @@ export class MongoStorage implements IStorage {
             description: "Affordable pilgrimage option with clean accommodation, basic meals, and essential services.",
             price: 1200,
             duration: "7 Days",
+            days: 7,
+            fromDate: "2024-10-20",
+            toDate: "2024-10-26",
             type: "umrah",
             accommodation: "3-star hotel accommodation",
             transport: "Shared transportation",
             meals: "Breakfast included",
+            hotelDistanceMakkah: "800m from Haram",
+            hotelDistanceMadinah: "600m from Masjid Nabawi",
+            amenities: ["Transport", "Visa"],
             image: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
             featured: false
           },
@@ -325,10 +389,16 @@ export class MongoStorage implements IStorage {
             description: "Ultimate luxury Hajj experience with premium tents, private transportation, and personalized service.",
             price: 6500,
             duration: "21 Days",
+            days: 21,
+            fromDate: "2025-06-15",
+            toDate: "2025-07-05",
             type: "hajj",
             accommodation: "Premium tents in Mina & Arafat",
             transport: "Private AC transportation",
             meals: "Personal guide included",
+            hotelDistanceMakkah: "100m from Haram",
+            hotelDistanceMadinah: "100m from Masjid Nabawi",
+            amenities: ["Direct flight", "3 times buffet meals", "Transport", "Visa", "Ziyarat", "Umrah kit", "Zam Zam", "Laundry"],
             image: "https://pixabay.com/get/g81043d2b84a4f0158d9cae5a48c2007353d2a4e91c6324fb31f8f8021b7dd4dc15b417c93102df07a392427364c2f0cbe1cf95e9bbab0613dd509aafbeafdb6e_1280.jpg",
             featured: true
           },
@@ -337,10 +407,16 @@ export class MongoStorage implements IStorage {
             description: "Complete Hajj package with comfortable accommodation, group services, and spiritual guidance.",
             price: 4200,
             duration: "18 Days",
+            days: 18,
+            fromDate: "2025-06-20",
+            toDate: "2025-07-07",
             type: "hajj",
             accommodation: "Standard tents & hotels",
             transport: "Group transportation",
             meals: "Group guide service",
+            hotelDistanceMakkah: "400m from Haram",
+            hotelDistanceMadinah: "300m from Masjid Nabawi",
+            amenities: ["Direct flight", "3 times buffet meals", "Transport", "Visa", "Ziyarat"],
             image: "https://images.unsplash.com/photo-1587474260584-136574528ed5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
             featured: false
           },
@@ -349,10 +425,16 @@ export class MongoStorage implements IStorage {
             description: "Affordable Hajj option with essential services and shared accommodation.",
             price: 3200,
             duration: "15 Days",
+            days: 15,
+            fromDate: "2025-06-25",
+            toDate: "2025-07-09",
             type: "hajj",
             accommodation: "Shared tents & basic hotels",
             transport: "Shared bus transport",
             meals: "Basic guidance provided",
+            hotelDistanceMakkah: "1km from Haram",
+            hotelDistanceMadinah: "800m from Masjid Nabawi",
+            amenities: ["Transport", "Visa"],
             image: "https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=400",
             featured: false
           }
@@ -458,7 +540,16 @@ export class MongoStorage implements IStorage {
 
   async createPackage(packageData: InsertPackage): Promise<Package> {
     try {
-      const pkg = new PackageModel({ ...packageData, featured: packageData.featured ?? false });
+      const pkg = new PackageModel({ 
+        ...packageData, 
+        featured: packageData.featured ?? false,
+        days: packageData.days ?? 7,
+        fromDate: packageData.fromDate ?? '',
+        toDate: packageData.toDate ?? '',
+        hotelDistanceMakkah: packageData.hotelDistanceMakkah ?? '',
+        hotelDistanceMadinah: packageData.hotelDistanceMadinah ?? '',
+        amenities: packageData.amenities ?? []
+      });
       const saved = await pkg.save();
       return { ...saved.toJSON(), id: saved._id.toString() };
     } catch (error) {
