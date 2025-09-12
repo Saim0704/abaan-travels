@@ -67,12 +67,13 @@ export default function Packages() {
       </section>
 
       {/* Packages Grid */}
-      <section className="pb-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 bg-gradient-to-br from-background to-muted/30 relative">
+        <div className="absolute inset-0 bg-[url('/api/placeholder/1200/800')] bg-cover bg-center opacity-5 dark:opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-card rounded-lg border border-border overflow-hidden shadow-lg">
+                <div key={index} className="glass-card overflow-hidden">
                   <Skeleton className="w-full h-48" />
                   <div className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
@@ -111,8 +112,9 @@ export default function Packages() {
       </section>
 
       {/* Info Section */}
-      <section className="py-20 bg-muted">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 bg-gradient-to-br from-muted/50 to-background/50 relative">
+        <div className="absolute inset-0 bg-[url('/api/placeholder/1200/800')] bg-cover bg-center opacity-5 dark:opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-foreground mb-4" data-testid="text-package-info-title">
               About {activeType === 'hajj' ? 'Hajj' : 'Umrah'}
@@ -128,7 +130,7 @@ export default function Packages() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {activeType === 'umrah' ? (
               <>
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-mosque text-2xl text-primary"></i>
                   </div>
@@ -139,7 +141,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-calendar text-2xl text-primary"></i>
                   </div>
@@ -150,7 +152,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-heart text-2xl text-primary"></i>
                   </div>
@@ -163,7 +165,7 @@ export default function Packages() {
               </>
             ) : (
               <>
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-kaaba text-2xl text-primary"></i>
                   </div>
@@ -174,7 +176,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-calendar-alt text-2xl text-primary"></i>
                   </div>
@@ -185,7 +187,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-users text-2xl text-primary"></i>
                   </div>
@@ -196,7 +198,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-route text-2xl text-primary"></i>
                   </div>
@@ -207,7 +209,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-heart text-2xl text-primary"></i>
                   </div>
@@ -218,7 +220,7 @@ export default function Packages() {
                   </p>
                 </div>
 
-                <div className="bg-card rounded-lg p-6 shadow-lg">
+                <div className="glass-card p-6">
                   <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i className="fas fa-hands-praying text-2xl text-primary"></i>
                   </div>

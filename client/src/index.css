@@ -50,6 +50,11 @@
   --shadow-2xl: 0px 2px 0px 0px hsl(158 64% 20% / 0.00);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
+  
+  /* Glass morphism variables */
+  --glass-bg: hsl(0 0% 100% / 0.55);
+  --glass-border: hsl(0 0% 100% / 0.35);
+  --glass-shadow: 0 10px 30px hsl(0 0% 0% / 0.06);
 }
 
 .dark {
@@ -97,6 +102,11 @@
   --shadow-lg: 0px 2px 0px 0px hsl(158 64% 25% / 0.00), 0px 4px 6px -1px hsl(158 64% 25% / 0.00);
   --shadow-xl: 0px 2px 0px 0px hsl(158 64% 25% / 0.00), 0px 8px 10px -1px hsl(158 64% 25% / 0.00);
   --shadow-2xl: 0px 2px 0px 0px hsl(158 64% 25% / 0.00);
+  
+  /* Glass morphism variables for dark mode */
+  --glass-bg: hsl(0 0% 5% / 0.45);
+  --glass-border: hsl(0 0% 100% / 0.10);
+  --glass-shadow: 0 10px 30px hsl(0 0% 0% / 0.40);
 }
 
 @layer base {
@@ -106,6 +116,57 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  /* Glass Morphism Effects */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+  
+  @media (min-width: 768px) {
+    .glass {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+  }
+  
+  .glass-nav {
+    @apply glass sticky top-0 z-50;
+    border-bottom: 1px solid color-mix(in oklab, var(--glass-border), transparent 40%);
+    background: color-mix(in oklab, var(--glass-bg), transparent 20%);
+  }
+  
+  .glass-card {
+    @apply glass rounded-xl;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .glass-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow), 0 20px 40px hsl(0 0% 0% / 0.1);
+  }
+  
+  .glass-pill {
+    @apply glass rounded-full px-4 py-2;
+    transition: all 0.2s ease;
+  }
+  
+  .glass-pill.active {
+    background: color-mix(in oklab, var(--glass-bg), var(--primary) 30%);
+    border-color: color-mix(in oklab, var(--glass-border), var(--primary) 40%);
+  }
+  
+  /* Fallback for browsers that don't support backdrop-filter */
+  @supports not (backdrop-filter: blur(12px)) {
+    .glass, .glass-nav, .glass-card, .glass-pill {
+      background: color-mix(in oklab, var(--background), transparent 30%);
+    }
   }
 }
 

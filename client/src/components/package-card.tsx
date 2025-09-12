@@ -9,13 +9,16 @@ interface PackageCardProps {
 
 export default function PackageCard({ package: pkg }: PackageCardProps) {
   return (
-    <div className="package-card bg-card rounded-lg border border-border overflow-hidden shadow-lg" data-testid={`package-card-${pkg.id}`}>
-      <img
-        src={pkg.image}
-        alt={pkg.title}
-        className="w-full h-48 object-cover"
-        data-testid={`package-image-${pkg.id}`}
-      />
+    <div className="glass-card overflow-hidden group" data-testid={`package-card-${pkg.id}`}>
+      <div className="relative">
+        <img
+          src={pkg.image}
+          alt={pkg.title}
+          className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+          data-testid={`package-image-${pkg.id}`}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+      </div>
       <div className="p-6">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold text-foreground" data-testid={`package-title-${pkg.id}`}>
@@ -23,7 +26,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
           </h3>
           <Badge
             variant="secondary"
-            className="bg-secondary/10 text-secondary"
+            className="glass-pill bg-secondary/20 text-secondary border-secondary/30"
             data-testid={`package-duration-${pkg.id}`}
           >
             {pkg.duration}
@@ -54,7 +57,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
             <span className="text-sm text-muted-foreground">/person</span>
           </div>
           <Button
-            className="bg-primary hover:bg-primary/90 text-primary-foreground"
+            className="glass-pill bg-primary/80 hover:bg-primary/90 text-primary-foreground border border-primary/30"
             data-testid={`button-view-package-${pkg.id}`}
           >
             View Details

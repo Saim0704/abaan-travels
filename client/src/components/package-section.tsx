@@ -16,8 +16,9 @@ export default function PackageSection() {
   const showHajjPackages = () => setActiveType("hajj");
 
   return (
-    <section className="py-20 bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-gradient-to-br from-background to-muted/30 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[url('/api/placeholder/1200/800')] bg-cover bg-center opacity-5 dark:opacity-10"></div>
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-4xl font-bold text-foreground mb-4" data-testid="text-packages-title">
             Our Premium Packages
@@ -29,12 +30,12 @@ export default function PackageSection() {
 
         {/* Package Type Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="bg-muted p-1 rounded-lg">
+          <div className="glass p-2 rounded-2xl">
             <button
-              className={`package-tab px-6 py-3 rounded-md font-medium text-sm transition-all ${
+              className={`glass-pill px-6 py-3 font-medium text-sm transition-all ${
                 activeType === "umrah"
-                  ? "active bg-primary text-primary-foreground"
-                  : "text-muted-foreground"
+                  ? "active text-primary-foreground"
+                  : "text-foreground/80 hover:text-foreground"
               }`}
               onClick={showUmrahPackages}
               data-testid="button-umrah-packages"
@@ -43,10 +44,10 @@ export default function PackageSection() {
               Umrah Packages
             </button>
             <button
-              className={`package-tab px-6 py-3 rounded-md font-medium text-sm transition-all ${
+              className={`glass-pill px-6 py-3 font-medium text-sm transition-all ${
                 activeType === "hajj"
-                  ? "active bg-primary text-primary-foreground"
-                  : "text-muted-foreground"
+                  ? "active text-primary-foreground"
+                  : "text-foreground/80 hover:text-foreground"
               }`}
               onClick={showHajjPackages}
               data-testid="button-hajj-packages"
@@ -61,7 +62,7 @@ export default function PackageSection() {
         {isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[...Array(3)].map((_, index) => (
-              <div key={index} className="bg-card rounded-lg border border-border overflow-hidden shadow-lg">
+              <div key={index} className="glass-card overflow-hidden">
                 <Skeleton className="w-full h-48" />
                 <div className="p-6 space-y-4">
                   <div className="flex items-center justify-between">
@@ -99,7 +100,7 @@ export default function PackageSection() {
         <div className="text-center mt-12">
           <Button
             size="lg"
-            className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-3 text-lg font-semibold"
+            className="glass-pill bg-secondary/80 hover:bg-secondary/90 backdrop-blur-md text-secondary-foreground px-8 py-4 text-lg font-semibold border border-secondary/20"
             data-testid="button-view-all-packages"
           >
             View All Packages

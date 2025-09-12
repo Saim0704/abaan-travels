@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ModeToggle } from "@/components/mode-toggle";
 import { cn } from "@/lib/utils";
 
 export default function Navigation() {
@@ -16,7 +17,8 @@ export default function Navigation() {
   ];
 
   return (
-    <header className="bg-background border-b border-border sticky top-0 z-50 backdrop-blur-md bg-background/95">
+    <header className="glass-nav relative">
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent dark:via-white/10"></div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -28,16 +30,16 @@ export default function Navigation() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
+            <div className="flex items-center space-x-2">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "transition-colors",
+                    "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
                     location === item.href
-                      ? "text-primary font-medium"
-                      : "text-foreground hover:text-primary"
+                      ? "glass-pill active text-primary-foreground"
+                      : "text-foreground/80 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5"
                   )}
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                 >
@@ -47,37 +49,42 @@ export default function Navigation() {
             </div>
           </nav>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              data-testid="button-mobile-menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="h-4 w-4" />
-              ) : (
-                <Menu className="h-4 w-4" />
-              )}
-            </Button>
+          <div className="flex items-center space-x-2">
+            <ModeToggle />
+            
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="glass-pill h-9 w-9"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                data-testid="button-mobile-menu"
+              >
+                {mobileMenuOpen ? (
+                  <X className="h-4 w-4" />
+                ) : (
+                  <Menu className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 bg-card border-t border-border">
+        <div className="md:hidden border-t border-white/10 dark:border-white/5">
+          <div className="px-4 pt-4 pb-4 space-y-2 glass">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "block px-3 py-2 text-base font-medium transition-colors",
+                  "block px-4 py-3 text-base font-medium transition-all duration-200 rounded-xl",
                   location === item.href
-                    ? "text-primary"
-                    : "text-foreground hover:text-primary"
+                    ? "glass-pill active text-primary-foreground"
+                    : "text-foreground/80 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5"
                 )}
                 onClick={() => setMobileMenuOpen(false)}
                 data-testid={`mobile-link-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
