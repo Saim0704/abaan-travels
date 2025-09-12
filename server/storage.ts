@@ -1,6 +1,10 @@
 import { type User, type InsertUser, type Package, type InsertPackage, type SliderImage, type InsertSliderImage, UserModel, PackageModel, SliderImageModel } from "@shared/schema";
 import { randomUUID } from "crypto";
 import mongoose from "mongoose";
+import session from "express-session";
+import createMemoryStore from "memorystore";
+
+const MemoryStore = createMemoryStore(session);
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -20,17 +24,23 @@ export interface IStorage {
   createSliderImage(sliderData: InsertSliderImage): Promise<SliderImage>;
   updateSliderImage(id: string, sliderData: Partial<InsertSliderImage>): Promise<SliderImage>;
   deleteSliderImage(id: string): Promise<boolean>;
+
+  sessionStore: session.Store;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<string, User>;
   private packages: Map<string, Package>;
   private sliderImages: Map<string, SliderImage>;
+  public sessionStore: session.Store;
 
   constructor() {
     this.users = new Map();
     this.packages = new Map();
     this.sliderImages = new Map();
+    this.sessionStore = new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    });
     
     // Initialize with default data
     this.initializeDefaultData();
@@ -236,8 +246,14 @@ export class MemStorage implements IStorage {
 
 export class MongoStorage implements IStorage {
   private isConnected = false;
+  public sessionStore: session.Store;
 
   constructor() {
+    // For MongoDB, we use MemoryStore for sessions to keep it simple
+    // In production, you might want to use connect-mongo for MongoDB session store
+    this.sessionStore = new MemoryStore({
+      checkPeriod: 86400000, // prune expired entries every 24h
+    });
     this.connectToDatabase();
   }
 

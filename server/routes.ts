@@ -3,8 +3,19 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertPackageSchema, insertSliderImageSchema } from "@shared/schema";
 import { z } from "zod";
+import { setupAuth } from "./auth";
+
+// Authentication middleware for admin routes
+function requireAuth(req: any, res: any, next: any) {
+  if (!req.isAuthenticated()) {
+    return res.status(401).json({ message: "Authentication required" });
+  }
+  next();
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Setup auth routes (/api/register, /api/login, /api/logout, /api/user)
+  setupAuth(app);
   // Package routes
   app.get("/api/packages", async (req, res) => {
     try {
@@ -41,7 +52,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/packages", async (req, res) => {
+  app.post("/api/packages", requireAuth, async (req, res) => {
     try {
       const packageData = insertPackageSchema.parse(req.body);
       const newPackage = await storage.createPackage(packageData);
@@ -54,7 +65,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/packages/:id", async (req, res) => {
+  app.put("/api/packages/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const packageData = insertPackageSchema.partial().parse(req.body);
@@ -71,7 +82,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/packages/:id", async (req, res) => {
+  app.delete("/api/packages/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = await storage.deletePackage(id);
@@ -94,7 +105,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/slider-images", async (req, res) => {
+  app.post("/api/slider-images", requireAuth, async (req, res) => {
     try {
       const sliderData = insertSliderImageSchema.parse(req.body);
       const newSlider = await storage.createSliderImage(sliderData);
@@ -107,7 +118,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/slider-images/:id", async (req, res) => {
+  app.put("/api/slider-images/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const sliderData = insertSliderImageSchema.partial().parse(req.body);
@@ -124,7 +135,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/slider-images/:id", async (req, res) => {
+  app.delete("/api/slider-images/:id", requireAuth, async (req, res) => {
     try {
       const { id } = req.params;
       const deleted = await storage.deleteSliderImage(id);
