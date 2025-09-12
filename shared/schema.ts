@@ -2,6 +2,7 @@ import { sql } from "drizzle-orm";
 import { pgTable, text, varchar, integer, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { Schema, model, type Document } from "mongoose";
 
 export const packages = pgTable("packages", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
@@ -52,3 +53,93 @@ export const insertUserSchema = createInsertSchema(users).pick({
 
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type User = typeof users.$inferSelect;
+
+// MongoDB/Mongoose Schemas and Models
+export interface IUser extends Document {
+  _id: string;
+  username: string;
+  password: string;
+}
+
+export interface IPackage extends Document {
+  _id: string;
+  title: string;
+  description: string;
+  price: number;
+  duration: string;
+  type: string;
+  accommodation: string;
+  transport: string;
+  meals: string;
+  image: string;
+  featured: boolean;
+}
+
+export interface ISliderImage extends Document {
+  _id: string;
+  title: string;
+  subtitle: string;
+  buttonText: string;
+  imageUrl: string;
+  order: number;
+}
+
+const UserSchema = new Schema<IUser>({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+}, {
+  timestamps: false,
+  toJSON: {
+    transform: (_doc, ret: any) => {
+      ret.id = ret._id.toString();
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    }
+  }
+});
+
+const PackageSchema = new Schema<IPackage>({
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  duration: { type: String, required: true },
+  type: { type: String, required: true },
+  accommodation: { type: String, required: true },
+  transport: { type: String, required: true },
+  meals: { type: String, required: true },
+  image: { type: String, required: true },
+  featured: { type: Boolean, default: false },
+}, {
+  timestamps: false,
+  toJSON: {
+    transform: (_doc, ret: any) => {
+      ret.id = ret._id.toString();
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    }
+  }
+});
+
+const SliderImageSchema = new Schema<ISliderImage>({
+  title: { type: String, required: true },
+  subtitle: { type: String, required: true },
+  buttonText: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+  order: { type: Number, default: 0 },
+}, {
+  timestamps: false,
+  toJSON: {
+    transform: (_doc, ret: any) => {
+      ret.id = ret._id.toString();
+      delete ret._id;
+      delete ret.__v;
+      return ret;
+    }
+  }
+});
+
+export const UserModel = model<IUser>('User', UserSchema);
+export const PackageModel = model<IPackage>('Package', PackageSchema);
+export const SliderImageModel = model<ISliderImage>('SliderImage', SliderImageSchema);
