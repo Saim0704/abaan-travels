@@ -29,6 +29,8 @@ export default function PackageForm() {
       toDate: "",
       type: "umrah",
       accommodation: "",
+      accommodationMakkahStars: 3,
+      accommodationMadinahStars: 3,
       transport: "",
       meals: "",
       hotelDistanceMakkah: "",
@@ -36,6 +38,7 @@ export default function PackageForm() {
       amenities: [],
       image: "",
       featured: false,
+      expired: false,
     },
   });
 
@@ -100,7 +103,7 @@ export default function PackageForm() {
             name="price"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Price ($)</FormLabel>
+                <FormLabel>Price (₹)</FormLabel>
                 <FormControl>
                   <Input
                     type="number"
@@ -216,12 +219,60 @@ export default function PackageForm() {
             <FormItem>
               <FormLabel>Accommodation</FormLabel>
               <FormControl>
-                <Input {...field} placeholder="e.g., 5-star hotel near Haram" data-testid="input-package-accommodation" />
+                <Input {...field} placeholder="e.g., Luxury hotel accommodations" data-testid="input-package-accommodation" />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
+
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="accommodationMakkahStars"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Makkah Accommodation Stars</FormLabel>
+                <Select onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={field.value?.toString()}>
+                  <FormControl>
+                    <SelectTrigger data-testid="select-makkah-stars">
+                      <SelectValue placeholder="Select stars" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="3">3 Stars</SelectItem>
+                    <SelectItem value="4">4 Stars</SelectItem>
+                    <SelectItem value="5">5 Stars</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="accommodationMadinahStars"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Madinah Accommodation Stars</FormLabel>
+                <Select onValueChange={(value) => field.onChange(parseInt(value))} defaultValue={field.value?.toString()}>
+                  <FormControl>
+                    <SelectTrigger data-testid="select-madinah-stars">
+                      <SelectValue placeholder="Select stars" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="3">3 Stars</SelectItem>
+                    <SelectItem value="4">4 Stars</SelectItem>
+                    <SelectItem value="5">5 Stars</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
@@ -344,27 +395,51 @@ export default function PackageForm() {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="featured"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-              <div className="space-y-0.5">
-                <FormLabel>Featured Package</FormLabel>
-                <div className="text-sm text-muted-foreground">
-                  Mark this package as featured
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="featured"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                <div className="space-y-0.5">
+                  <FormLabel>Featured Package</FormLabel>
+                  <div className="text-sm text-muted-foreground">
+                    Mark this package as featured
+                  </div>
                 </div>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value || false}
-                  onCheckedChange={field.onChange}
-                  data-testid="switch-package-featured"
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+                <FormControl>
+                  <Switch
+                    checked={field.value || false}
+                    onCheckedChange={field.onChange}
+                    data-testid="switch-package-featured"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="expired"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                <div className="space-y-0.5">
+                  <FormLabel>Expired Package</FormLabel>
+                  <div className="text-sm text-muted-foreground">
+                    Mark this package as expired
+                  </div>
+                </div>
+                <FormControl>
+                  <Switch
+                    checked={field.value || false}
+                    onCheckedChange={field.onChange}
+                    data-testid="switch-package-expired"
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </div>
 
         <Button
           type="submit"

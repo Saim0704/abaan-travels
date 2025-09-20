@@ -27,6 +27,8 @@ export const packages = pgTable("packages", {
   toDate: text("to_date").notNull().default(''),
   type: text("type").notNull(), // 'hajj' or 'umrah'
   accommodation: text("accommodation").notNull(),
+  accommodationMakkahStars: integer("accommodation_makkah_stars").default(3),
+  accommodationMadinahStars: integer("accommodation_madinah_stars").default(3),
   transport: text("transport").notNull(),
   meals: text("meals").notNull(),
   hotelDistanceMakkah: text("hotel_distance_makkah").notNull().default(''),
@@ -34,6 +36,7 @@ export const packages = pgTable("packages", {
   amenities: text("amenities").array().notNull().default([]),
   image: text("image").notNull(),
   featured: boolean("featured").default(false),
+  expired: boolean("expired").default(false),
 });
 
 export const sliderImages = pgTable("slider_images", {
@@ -90,6 +93,8 @@ export interface IPackage extends Document {
   toDate: string;
   type: string;
   accommodation: string;
+  accommodationMakkahStars?: number;
+  accommodationMadinahStars?: number;
   transport: string;
   meals: string;
   hotelDistanceMakkah: string;
@@ -97,6 +102,7 @@ export interface IPackage extends Document {
   amenities: string[];
   image: string;
   featured: boolean;
+  expired?: boolean;
 }
 
 export interface ISliderImage extends Document {
@@ -133,6 +139,8 @@ const PackageSchema = new Schema<IPackage>({
   toDate: { type: String, required: true, default: '' },
   type: { type: String, required: true },
   accommodation: { type: String, required: true },
+  accommodationMakkahStars: { type: Number, default: 3 },
+  accommodationMadinahStars: { type: Number, default: 3 },
   transport: { type: String, required: true },
   meals: { type: String, required: true },
   hotelDistanceMakkah: { type: String, required: true, default: '' },
@@ -140,6 +148,7 @@ const PackageSchema = new Schema<IPackage>({
   amenities: [{ type: String }],
   image: { type: String, required: true },
   featured: { type: Boolean, default: false },
+  expired: { type: Boolean, default: false },
 }, {
   timestamps: false,
   toJSON: {

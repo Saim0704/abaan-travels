@@ -24,24 +24,13 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
           <h3 className="text-xl font-semibold text-foreground" data-testid={`package-title-${pkg.id}`}>
             {pkg.title}
           </h3>
-          <div className="flex gap-2">
-            <Badge
-              variant="secondary"
-              className="glass-pill bg-secondary/20 text-secondary border-secondary/30"
-              data-testid={`package-duration-${pkg.id}`}
-            >
-              {pkg.duration}
-            </Badge>
-            {pkg.days && (
-              <Badge
-                variant="outline"
-                className="glass-pill bg-primary/10 text-primary border-primary/30"
-                data-testid={`package-days-${pkg.id}`}
-              >
-                {pkg.days} days
-              </Badge>
-            )}
-          </div>
+          <Badge
+            variant="secondary"
+            className="glass-pill bg-secondary/20 text-secondary border-secondary/30"
+            data-testid={`package-duration-${pkg.id}`}
+          >
+            {pkg.duration}
+          </Badge>
         </div>
         <p className="text-muted-foreground mb-4 text-sm" data-testid={`package-description-${pkg.id}`}>
           {pkg.description}
@@ -62,9 +51,33 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
         )}
         
         <div className="space-y-2 mb-4">
-          <div className="flex items-center text-sm text-muted-foreground">
-            <Bed className="h-4 w-4 mr-2 text-primary" />
-            <span data-testid={`package-accommodation-${pkg.id}`}>{pkg.accommodation}</span>
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <div className="flex items-center">
+              <Bed className="h-4 w-4 mr-2 text-primary" />
+              <span data-testid={`package-accommodation-${pkg.id}`}>{pkg.accommodation}</span>
+            </div>
+            <div className="flex gap-2 text-xs">
+              {pkg.accommodationMakkahStars && (
+                <div className="flex items-center gap-1 bg-primary/10 px-2 py-1 rounded-full">
+                  <span className="text-primary font-medium">Makkah:</span>
+                  <div className="flex">
+                    {Array.from({ length: pkg.accommodationMakkahStars }).map((_, i) => (
+                      <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                </div>
+              )}
+              {pkg.accommodationMadinahStars && (
+                <div className="flex items-center gap-1 bg-secondary/10 px-2 py-1 rounded-full">
+                  <span className="text-secondary font-medium">Madinah:</span>
+                  <div className="flex">
+                    {Array.from({ length: pkg.accommodationMadinahStars }).map((_, i) => (
+                      <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
           <div className="flex items-center text-sm text-muted-foreground">
             <Plane className="h-4 w-4 mr-2 text-primary" />
@@ -118,7 +131,7 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
         <div className="flex items-center justify-between">
           <div>
             <span className="text-2xl font-bold text-primary" data-testid={`package-price-${pkg.id}`}>
-              ${pkg.price.toLocaleString()}
+              ₹{pkg.price.toLocaleString()}
             </span>
             <span className="text-sm text-muted-foreground">/person</span>
           </div>
