@@ -30,12 +30,12 @@ export default function PackageSection() {
 
         {/* Package Type Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="glass p-2 rounded-2xl">
+          <div className="bg-muted p-1 rounded-lg">
             <button
-              className={`glass-pill px-6 py-3 font-medium text-sm transition-all ${
+              className={`package-tab px-6 py-3 rounded-md font-medium text-sm transition-all ${
                 activeType === "umrah"
-                  ? "active text-primary-foreground"
-                  : "text-foreground/80 hover:text-foreground"
+                  ? "active bg-primary text-primary-foreground"
+                  : "text-muted-foreground"
               }`}
               onClick={showUmrahPackages}
               data-testid="button-umrah-packages"
@@ -44,10 +44,10 @@ export default function PackageSection() {
               Umrah Packages
             </button>
             <button
-              className={`glass-pill px-6 py-3 font-medium text-sm transition-all ${
+              className={`package-tab px-6 py-3 rounded-md font-medium text-sm transition-all ${
                 activeType === "hajj"
-                  ? "active text-primary-foreground"
-                  : "text-foreground/80 hover:text-foreground"
+                  ? "active bg-primary text-primary-foreground"
+                  : "text-muted-foreground"
               }`}
               onClick={showHajjPackages}
               data-testid="button-hajj-packages"

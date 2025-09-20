@@ -36,10 +36,10 @@ export default function Navigation() {
                   key={item.href}
                   href={item.href}
                   className={cn(
-                    "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                    "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border",
                     location === item.href
-                      ? "glass-pill active text-primary-foreground"
-                      : "text-foreground/80 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5"
+                      ? "glass-pill active text-primary-foreground border-primary/20"
+                      : "text-foreground/80 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5 border-border/40 hover:border-border/60"
                   )}
                   data-testid={`link-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
                 >
@@ -81,10 +81,10 @@ export default function Navigation() {
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "block px-4 py-3 text-base font-medium transition-all duration-200 rounded-xl",
+                  "block px-4 py-3 text-base font-medium transition-all duration-200 rounded-xl border",
                   location === item.href
-                    ? "glass-pill active text-primary-foreground"
-                    : "text-foreground/80 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5"
+                    ? "glass-pill active text-primary-foreground border-primary/20"
+                    : "text-foreground/80 hover:text-foreground hover:bg-white/10 dark:hover:bg-white/5 border-border/40 hover:border-border/60"
                 )}
                 onClick={() => setMobileMenuOpen(false)}
                 data-testid={`mobile-link-${item.label.toLowerCase().replace(/\s+/g, '-')}`}
