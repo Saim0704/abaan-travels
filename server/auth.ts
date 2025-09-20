@@ -162,7 +162,9 @@ export function setupAuth(app: Express) {
   });
 
   app.post("/api/login", loginLimiter, (req, res, next) => {
+    
     passport.authenticate("local", (err: any, user: SelectUser | false, info: any) => {
+      console.log("AuthProvider user:", user);
       if (err) {
         return next(err);
       }
