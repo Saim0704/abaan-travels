@@ -23,9 +23,10 @@ import {
 interface PackageListProps {
   packages: Package[];
   isLoading: boolean;
+  onEdit: (pkg: Package) => void;
 }
 
-export default function PackageList({ packages, isLoading }: PackageListProps) {
+export default function PackageList({ packages, isLoading, onEdit }: PackageListProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -134,7 +135,7 @@ export default function PackageList({ packages, isLoading }: PackageListProps) {
                         {pkg.duration}
                       </span>
                       <span className="font-semibold text-primary" data-testid={`package-list-price-${pkg.id}`}>
-                        ${pkg.price.toLocaleString()}
+                        ₹{pkg.price.toLocaleString()}
                       </span>
                     </div>
 
@@ -158,6 +159,7 @@ export default function PackageList({ packages, isLoading }: PackageListProps) {
                       variant="outline"
                       size="sm"
                       className="min-w-16"
+                      onClick={() => onEdit(pkg)}
                       data-testid={`button-edit-package-${pkg.id}`}
                     >
                       <Edit className="h-3 w-3 mr-1" />

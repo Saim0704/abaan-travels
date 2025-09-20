@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { insertPackageSchema, type InsertPackage, PREDEFINED_AMENITIES } from "@shared/schema";
+import { insertPackageSchema, type InsertPackage, type Package, PREDEFINED_AMENITIES } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,13 +13,38 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 
-export default function PackageForm() {
+interface PackageFormProps {
+  editingPackage?: Package;
+  onCancel?: () => void;
+}
+
+export default function PackageForm({ editingPackage, onCancel }: PackageFormProps) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
   const form = useForm<InsertPackage>({
     resolver: zodResolver(insertPackageSchema),
-    defaultValues: {
+    defaultValues: editingPackage ? {
+      title: editingPackage.title,
+      description: editingPackage.description,
+      price: editingPackage.price,
+      duration: editingPackage.duration,
+      days: editingPackage.days,
+      fromDate: editingPackage.fromDate,
+      toDate: editingPackage.toDate,
+      type: editingPackage.type,
+      accommodation: editingPackage.accommodation,
+      accommodationMakkahStars: editingPackage.accommodationMakkahStars || 3,
+      accommodationMadinahStars: editingPackage.accommodationMadinahStars || 3,
+      transport: editingPackage.transport,
+      meals: editingPackage.meals,
+      hotelDistanceMakkah: editingPackage.hotelDistanceMakkah,
+      hotelDistanceMadinah: editingPackage.hotelDistanceMadinah,
+      amenities: editingPackage.amenities || [],
+      image: editingPackage.image,
+      featured: editingPackage.featured,
+      expired: editingPackage.expired || false,
+    } : {
       title: "",
       description: "",
       price: 0,
@@ -43,20 +68,31 @@ export default function PackageForm() {
   });
 
   const createPackageMutation = useMutation({
-    mutationFn: (data: InsertPackage) => apiRequest("POST", "/api/packages", data),
+    mutationFn: (data: InsertPackage) => {
+      if (editingPackage) {
+        return apiRequest("PUT", `/api/packages/${editingPackage.id}`, data);
+      } else {
+        return apiRequest("POST", "/api/packages", data);
+      }
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/packages"] });
       queryClient.invalidateQueries({ queryKey: ["/api/packages/type"] });
       toast({
-        title: "Package Created",
-        description: "The package has been successfully created.",
+        title: editingPackage ? "Package Updated" : "Package Created",
+        description: editingPackage
+          ? "The package has been successfully updated."
+          : "The package has been successfully created.",
       });
       form.reset();
+      if (editingPackage && onCancel) {
+        onCancel();
+      }
     },
     onError: (error: any) => {
       toast({
         title: "Error",
-        description: error.message || "Failed to create package.",
+        description: error.message || (editingPackage ? "Failed to update package." : "Failed to create package."),
         variant: "destructive",
       });
     },
@@ -441,14 +477,28 @@ export default function PackageForm() {
           />
         </div>
 
-        <Button
-          type="submit"
-          className="w-full"
-          disabled={createPackageMutation.isPending}
-          data-testid="button-create-package"
-        >
-          {createPackageMutation.isPending ? "Creating..." : "Create Package"}
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="submit"
+            className="flex-1"
+            disabled={createPackageMutation.isPending}
+            data-testid="button-create-package"
+          >
+            {createPackageMutation.isPending
+              ? (editingPackage ? "Updating..." : "Creating...")
+              : (editingPackage ? "Update Package" : "Create Package")}
+          </Button>
+          {editingPackage && onCancel && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancel}
+              data-testid="button-cancel-edit"
+            >
+              Cancel
+            </Button>
+          )}
+        </div>
       </form>
     </Form>
   );

@@ -133,7 +133,7 @@ export default function SliderList({ sliderImages, isLoading, onEdit }: SliderLi
 
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span data-testid={`slider-button-text-${slider.id}`}>
-                        Button: "{slider.buttonText}"
+                        Button: "Contact Us" (redirects to Contact page)
                       </span>
                     </div>
                   </div>

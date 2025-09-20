@@ -26,13 +26,13 @@ export default function SliderForm({ editingSlider, onCancel }: SliderFormProps)
     defaultValues: editingSlider ? {
       title: editingSlider.title,
       subtitle: editingSlider.subtitle,
-      buttonText: editingSlider.buttonText,
+      buttonText: "Contact Us", // Default value for all sliders
       imageUrl: editingSlider.imageUrl,
       order: editingSlider.order,
     } : {
       title: "",
       subtitle: "",
-      buttonText: "",
+      buttonText: "Contact Us", // Default value for new sliders
       imageUrl: "",
       order: 0,
     },
@@ -122,19 +122,8 @@ export default function SliderForm({ editingSlider, onCancel }: SliderFormProps)
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="buttonText"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Button Text</FormLabel>
-                  <FormControl>
-                    <Input {...field} data-testid="input-slider-button-text" />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {/* Button text is now fixed as 'Contact Us' and hidden from admin */}
+            <input type="hidden" {...form.register("buttonText")} value="Contact Us" />
 
             <FormField
               control={form.control}

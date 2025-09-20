@@ -10,7 +10,16 @@ import SliderList from "@/components/admin/slider-list";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("packages");
+  const [editingPackage, setEditingPackage] = useState<Package | undefined>(undefined);
   const [editingSlider, setEditingSlider] = useState<SliderImage | undefined>(undefined);
+
+  const handleEditPackage = (pkg: Package) => {
+    setEditingPackage(pkg);
+  };
+
+  const handleCancelPackageEdit = () => {
+    setEditingPackage(undefined);
+  };
 
   const handleEditSlider = (slider: SliderImage) => {
     setEditingSlider(slider);
@@ -58,10 +67,12 @@ export default function Admin() {
               <div className="lg:col-span-1">
                 <Card>
                   <CardHeader>
-                    <CardTitle data-testid="text-add-package-title">Add New Package</CardTitle>
+                    <CardTitle data-testid="text-add-package-title">
+                      {editingPackage ? 'Edit Package' : 'Add New Package'}
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <PackageForm />
+                    <PackageForm editingPackage={editingPackage} onCancel={handleCancelPackageEdit} />
                   </CardContent>
                 </Card>
               </div>
@@ -72,7 +83,7 @@ export default function Admin() {
                     <CardTitle data-testid="text-existing-packages-title">Existing Packages</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <PackageList packages={packages} isLoading={packagesLoading} />
+                    <PackageList packages={packages} isLoading={packagesLoading} onEdit={handleEditPackage} />
                   </CardContent>
                 </Card>
               </div>
