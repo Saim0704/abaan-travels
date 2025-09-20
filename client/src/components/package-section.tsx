@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Package } from "@shared/schema";
 import PackageCard from "./package-card";
@@ -7,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function PackageSection() {
   const [activeType, setActiveType] = useState<"umrah" | "hajj">("umrah");
+  const [, setLocation] = useLocation();
 
   const { data: packages = [], isLoading } = useQuery<Package[]>({
     queryKey: ["/api/packages/type", activeType],
@@ -101,6 +103,7 @@ export default function PackageSection() {
           <Button
             size="lg"
             className="glass-pill bg-secondary/80 hover:bg-secondary/90 backdrop-blur-md text-secondary-foreground px-8 py-4 text-lg font-semibold border border-secondary/20"
+            onClick={() => setLocation('/packages')}
             data-testid="button-view-all-packages"
           >
             View All Packages
