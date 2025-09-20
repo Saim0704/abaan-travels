@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Redirect } from "wouter";
-import { useState } from "react";
+import { Redirect, useLocation } from "wouter";
+import { useState, useEffect } from "react";
 import { Shield, Lock, User } from "lucide-react";
 
 type LoginFormData = z.infer<typeof insertUserSchema>;
@@ -17,10 +17,18 @@ type LoginFormData = z.infer<typeof insertUserSchema>;
 export default function AuthPage() {
   const { user, loginMutation, registerMutation } = useAuth();
   const [isRegistering, setIsRegistering] = useState(false);
+  const [, setLocation] = useLocation();
 
   // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      setLocation("/admin");
+    }
+  }, [user, setLocation]);
+
+  // Don't render anything if user is authenticated (will redirect)
   if (user) {
-    return <Redirect to="/admin" />;
+    return null;
   }
 
   const form = useForm<LoginFormData>({
@@ -33,9 +41,17 @@ export default function AuthPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     if (isRegistering) {
-      registerMutation.mutate(data);
+      registerMutation.mutate(data, {
+        onSuccess: () => {
+          setLocation("/admin");
+        }
+      });
     } else {
-      loginMutation.mutate(data);
+      loginMutation.mutate(data, {
+        onSuccess: () => {
+          setLocation("/admin");
+        }
+      });
     }
   };
 
