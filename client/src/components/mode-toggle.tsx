@@ -12,7 +12,7 @@ export function ModeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="relative inline-flex h-6 w-11 items-center rounded-full bg-white/20 backdrop-blur-sm border border-white/30 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:bg-gray-800/20 dark:border-gray-600/30"
+      className="relative inline-flex h-6 w-11 items-center rounded-full bg-gray-300/80 backdrop-blur-sm border border-gray-400/50 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:bg-gray-700/80 dark:border-gray-500/60"
       data-testid="button-theme-toggle"
       aria-label="Toggle theme"
     >
