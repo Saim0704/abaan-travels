@@ -76,11 +76,23 @@
 
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
+import fs from "fs";
+import path from "path";
 
 dotenv.config();
+
+// Simple log function for production
+function log(message: string, source = "express") {
+  const formattedTime = new Date().toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+  });
+  console.log(`${formattedTime} [${source}] ${message}`);
+}
 
 const app = express();
 app.use(express.json());
@@ -129,10 +141,26 @@ mongoose.connect(mongoUri)
         throw err;
       });
 
-      if (app.get("env") === "development") {
+      if (process.env.NODE_ENV === "development") {
+        // Only import Vite in development
+        const { setupVite, log } = await import("./vite");
         await setupVite(app, server);
       } else {
-        serveStatic(app);
+        // Serve static files in production
+        const distPath = path.resolve(import.meta.dirname, "..", "dist", "public");
+        
+        if (!fs.existsSync(distPath)) {
+          throw new Error(
+            `Could not find the build directory: ${distPath}, make sure to build the client first`,
+          );
+        }
+
+        app.use(express.static(distPath));
+        
+        // Fall through to index.html for SPA routing
+        app.use("*", (_req, res) => {
+          res.sendFile(path.resolve(distPath, "index.html"));
+        });
       }
 
       const port = parseInt(process.env.PORT || '3000', 10);
@@ -141,7 +169,7 @@ mongoose.connect(mongoUri)
         host: "0.0.0.0",
         reusePort: true,
       }, () => {
-        log(`serving on port ${port}`);
+        console.log(`🚀 Server running on port ${port} (${process.env.NODE_ENV || 'development'} mode)`);
       });
     })();
   })
