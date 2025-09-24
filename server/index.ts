@@ -143,7 +143,7 @@ mongoose.connect(mongoUri)
 
       if (process.env.NODE_ENV === "development") {
         // Only import Vite in development
-        const { setupVite, log } = await import("./vite");
+        const { setupVite } = await import("./vite");
         await setupVite(app, server);
       } else {
         // Serve static files in production
