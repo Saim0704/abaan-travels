@@ -12,6 +12,7 @@ export default function Admin() {
   const [activeTab, setActiveTab] = useState("packages");
   const [editingPackage, setEditingPackage] = useState<Package | undefined>(undefined);
   const [editingSlider, setEditingSlider] = useState<SliderImage | undefined>(undefined);
+  const [showForm, setShowForm] = useState(false);
 
   const handleEditPackage = (pkg: Package) => {
     setEditingPackage(pkg);
@@ -64,7 +65,7 @@ export default function Admin() {
 
           <TabsContent value="packages" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1">
+              {/* <div className="lg:col-span-1">
                 <Card>
                   <CardHeader>
                     <CardTitle data-testid="text-add-package-title">
@@ -75,8 +76,46 @@ export default function Admin() {
                     <PackageForm editingPackage={editingPackage} onCancel={handleCancelPackageEdit} />
                   </CardContent>
                 </Card>
-              </div>
+              </div> */}
               
+              <div className="lg:col-span-1">
+                {showForm || editingPackage ? (
+                  <Card>
+                    <CardHeader className="flex justify-between items-center">
+                      <CardTitle data-testid="text-add-package-title">
+                        {editingPackage ? "Edit Package" : "Add New Package"}
+                      </CardTitle>
+                      <button
+                        onClick={() => {
+                          setShowForm(false);
+                          setEditingPackage(undefined);
+                        }}
+                        className="text-sm text-red-500 hover:underline"
+                      >
+                        Cancel
+                      </button>
+                    </CardHeader>
+                    <CardContent>
+                      <PackageForm
+                        editingPackage={editingPackage}
+                        onCancel={() => {
+                          setShowForm(false);
+                          setEditingPackage(undefined);
+                        }}
+                      />
+                    </CardContent>
+                  </Card>
+                ) : (
+                  <button
+                    onClick={() => setShowForm(true)}
+                    className="w-full py-2 px-4 bg-primary text-white rounded-lg shadow hover:bg-primary/90"
+                  >
+                    + Create New Package
+                  </button>
+                )}
+              </div>
+
+
               <div className="lg:col-span-2">
                 <Card>
                   <CardHeader>

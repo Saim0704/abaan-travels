@@ -29,7 +29,6 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
       description: editingPackage.description,
       price: editingPackage.price,
       duration: editingPackage.duration,
-      days: editingPackage.days,
       fromDate: editingPackage.fromDate,
       toDate: editingPackage.toDate,
       type: editingPackage.type,
@@ -49,7 +48,6 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
       description: "",
       price: 0,
       duration: "",
-      days: 7,
       fromDate: "",
       toDate: "",
       type: "umrah",
@@ -133,7 +131,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
           )}
         />
 
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="price"
@@ -167,7 +165,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
             )}
           />
 
-          <FormField
+          {/* <FormField
             control={form.control}
             name="days"
             render={({ field }) => (
@@ -185,7 +183,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -248,7 +246,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
           )}
         />
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="accommodation"
           render={({ field }) => (
@@ -260,9 +258,9 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
               <FormMessage />
             </FormItem>
           )}
-        />
+        /> */}
 
-        <div className="grid grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-2 gap-4"> */}
           <FormField
             control={form.control}
             name="accommodationMakkahStars"
@@ -308,7 +306,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
               </FormItem>
             )}
           />
-        </div>
+        {/* </div> */}
 
         <FormField
           control={form.control}
@@ -338,7 +336,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
           )}
         />
 
-        <div className="grid grid-cols-2 gap-4">
+        {/* <div className="grid grid-cols-2 gap-4"> */}
           <FormField
             control={form.control}
             name="hotelDistanceMakkah"
@@ -366,7 +364,7 @@ export default function PackageForm({ editingPackage, onCancel }: PackageFormPro
               </FormItem>
             )}
           />
-        </div>
+        {/* </div> */}
 
         <FormField
           control={form.control}

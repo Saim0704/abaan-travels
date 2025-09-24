@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Expose app port (change if your app uses a different one)
-EXPOSE 5000
+EXPOSE 3001
 
 RUN yarn install
 
