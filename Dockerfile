@@ -13,8 +13,11 @@ RUN npm ci && npm cache clean --force
 # Copy source code
 COPY . .
 
-# Build the application
+# Build the frontend
 RUN npm run build
+
+# Build the production server (without Vite dependencies)
+RUN npx esbuild server/production.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
 
 # Install only production dependencies for final stage
 RUN rm -rf node_modules && npm ci --only=production && npm cache clean --force
@@ -45,5 +48,5 @@ EXPOSE 5000
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD node -e "require('http').get('http://localhost:5000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })" || exit 1
 
-# Start the app
-CMD ["npm", "start"]
+# Start the app using production entry point
+CMD ["node", "dist/production.js"]
