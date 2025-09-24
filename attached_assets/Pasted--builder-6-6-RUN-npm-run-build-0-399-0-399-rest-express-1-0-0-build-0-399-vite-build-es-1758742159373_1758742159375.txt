@@ -1,0 +1,47 @@
+ > [builder 6/6] RUN npm run build:
+0.399 
+0.399 > rest-express@1.0.0 build
+0.399 > vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+0.399 
+0.498 /app/node_modules/rollup/dist/native.js:71
+0.498           throw new Error(
+0.498                 ^
+0.498 
+0.498 Error: Cannot find module @rollup/rollup-linux-arm64-musl. npm has a bug related to optional dependencies (https://github.com/npm/cli/issues/4828). Please try `npm i` again after removing both package-lock.json and node_modules directory.
+0.498     at requireWithFriendlyError (/app/node_modules/rollup/dist/native.js:71:9)
+0.498     at Object.<anonymous> (/app/node_modules/rollup/dist/native.js:80:76)
+0.498     ... 3 lines matching cause stack trace ...
+0.498     at Module._load (node:internal/modules/cjs/loader:1091:12)
+0.498     at cjsLoader (node:internal/modules/esm/translators:298:15)
+0.498     at ModuleWrap.<anonymous> (node:internal/modules/esm/translators:240:7)
+0.498     at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+0.498     at async ModuleLoader.import (node:internal/modules/esm/loader:606:24) {
+0.498   [cause]: Error: Cannot find module '@rollup/rollup-linux-arm64-musl'
+0.498   Require stack:
+0.498   - /app/node_modules/rollup/dist/native.js
+0.498       at Module._resolveFilename (node:internal/modules/cjs/loader:1207:15)
+0.498       at Module._load (node:internal/modules/cjs/loader:1038:27)
+0.498       at Module.require (node:internal/modules/cjs/loader:1289:19)
+0.498       at require (node:internal/modules/helpers:182:18)
+0.498       at requireWithFriendlyError (/app/node_modules/rollup/dist/native.js:53:10)
+0.498       at Object.<anonymous> (/app/node_modules/rollup/dist/native.js:80:76)
+0.498       at Module._compile (node:internal/modules/cjs/loader:1521:14)
+0.498       at Module._extensions..js (node:internal/modules/cjs/loader:1623:10)
+0.498       at Module.load (node:internal/modules/cjs/loader:1266:32)
+0.498       at Module._load (node:internal/modules/cjs/loader:1091:12) {
+0.498     code: 'MODULE_NOT_FOUND',
+0.498     requireStack: [ '/app/node_modules/rollup/dist/native.js' ]
+0.498   }
+0.498 }
+0.498 
+0.498 Node.js v20.19.5
+------
+Dockerfile:17
+--------------------
+  15 |     
+  16 |     # Build the application
+  17 | >>> RUN npm run build
+  18 |     
+  19 |     # Production stage
+--------------------
+ERROR: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1

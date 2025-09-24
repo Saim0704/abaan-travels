@@ -14,6 +14,11 @@ function requireAuth(req: any, res: any, next: any) {
 }
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Health check endpoint for Docker
+  app.get("/api/health", (req, res) => {
+    res.status(200).json({ status: "OK", timestamp: new Date().toISOString() });
+  });
+
   // Setup auth routes (/api/register, /api/login, /api/logout, /api/user)
   setupAuth(app);
   // Package routes
